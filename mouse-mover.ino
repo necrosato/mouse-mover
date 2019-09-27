@@ -9,14 +9,17 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 
-void load_delay() {
-    while(1) {
-        delay(1000);
-        Serial.println("Waiting for upload...");
+int button_pin = 8;
+
+void dont_move() {
+    delay(1000);
+    while(true) {
+        if (digitalRead(button_pin) == HIGH) {
+          break;
+        }
+        delay(100);
     }
 }
-
-int button_pin = 8;
 
 void typeKey(int key)
 {
@@ -47,12 +50,13 @@ void setup()
 
 void loop() {
     if(digitalRead(button_pin) == HIGH) {
-      load_delay();
+      dont_move();
+      delay(1000);
     }
     int r1 = random(10);
     if (!r1) {
-      int movex = 100;
-      int movey = 100;
+      int movex = random(100);
+      int movey = random(100);
       int mult = random(4);
       switch (mult) {
         case 1:
