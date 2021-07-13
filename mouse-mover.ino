@@ -48,13 +48,21 @@ void setup()
   randomSeed(analogRead(0));
 }
 
+unsigned long timerMinutes = 45;
+unsigned long maxTime = timerMinutes * 60 * 1000;
+unsigned long totalTime = 0;
+unsigned long delayTime = 1000;
+
 void loop() {
     if(digitalRead(button_pin) == HIGH) {
       dont_move();
       delay(1000);
     }
-    int r1 = random(10);
-    if (!r1) {
+
+    if (totalTime < maxTime) {
+      Serial.print(totalTime);
+      Serial.print(" / ");
+      Serial.println(maxTime);
       int movex = random(100);
       int movey = random(100);
       int mult = random(4);
@@ -69,8 +77,9 @@ void loop() {
           break;
       }
       Mouse.move(movex, movey);
+      totalTime += delayTime;
     }
-    delay(50);
+    delay(delayTime);
     //Mouse.move(0, 100);
     //delay(500);
     //Mouse.move(-100, 0);
